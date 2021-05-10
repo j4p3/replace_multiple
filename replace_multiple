@@ -1,13 +1,26 @@
 #!/bin/bash
 
+replace () {
+  echo "searching directory $1,"
+  echo "replacing instances of:"
+  echo "-----------------------"
+  echo "$2"
+  echo "-----------------------"
+  echo "with:"
+  echo "-----------------------"
+  echo "$3"
+  echo "-----------------------"
+  echo
+  grep -rl $2 $1 |
+  xargs sed -i "s/$2/$3/g"
+}
+
 replace_multiple () {
   echo "input file: $1"
   echo "replacement folder: $2"
 
-  cat $1 |
-  xargs -n1 |
-  awk -F, '{print "replace.sh . "$1" "$2""}' |
-  bash
+  export -f replace
+  cat $1 | xargs -n1 | awk -F, -v dir=$2 '{print ""dir" "$1" "$2""}' | xargs -l -I{} bash -c "replace {}"
 }
 
 replace_multiple $1 $2
