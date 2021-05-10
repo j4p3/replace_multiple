@@ -1,0 +1,13 @@
+#!/bin/bash
+
+replace_multiple () {
+  echo "input file: $1"
+  echo "replacement folder: $2"
+
+  cat $1 |
+  xargs -n1 |
+  awk -F, '{print "replace.sh . "$1" "$2""}' |
+  bash
+}
+
+replace_multiple $1 $2
