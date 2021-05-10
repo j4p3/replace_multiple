@@ -1,0 +1,1 @@
+cat sample_replacements.txt | xargs -n1 | awk -F, '{print "replace_multiple.sh "$1" "$2""}' | bash
